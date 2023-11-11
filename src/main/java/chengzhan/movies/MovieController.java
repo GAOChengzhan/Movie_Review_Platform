@@ -12,9 +12,16 @@ import java.util.Optional;
 @RequestMapping("/api/v1/movies")
 public class MovieController {
 
+    @Autowired
+    private MovieService service;
+
     @GetMapping
-    public ResponseEntity<String> getMovies() {
-        return new ResponseEntity<String>("All Movies", HttpStatus.OK);
+    public ResponseEntity<List<Movie>> getMovies() {
+        return new ResponseEntity<List<Movie>>(service.findAllMovies(), HttpStatus.OK);
     }
 
+    @GetMapping("/{imdbId}")
+    public ResponseEntity<Optional<Movie>> getSingleMovie(@PathVariable String imdbId){
+        return new ResponseEntity<Optional<Movie>>(service.findMovieByImdbId(imdbId), HttpStatus.OK);
+    }
 }
